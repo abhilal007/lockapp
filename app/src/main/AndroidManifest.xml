@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.lal.lawnchair"
+    android:installLocation="internalOnly">
+
+    <permission
+        android:name="com.android.launcher.permission.INSTALL_SHORTCUT"
+        android:description="@string/permdesc_install_shortcut"
+        android:label="@string/permlab_install_shortcut"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="${applicationId}.permission.QSB"
+        android:label="QSB"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="${applicationId}.permission.READ_SETTINGS"
+        android:description="@string/permdesc_read_settings"
+        android:label="@string/permlab_read_settings"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="${applicationId}.permission.WRITE_SETTINGS"
+        android:description="@string/permdesc_write_settings"
+        android:label="@string/permlab_write_settings"
+        android:protectionLevel="signatureOrSystem" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <uses-permission android:name="android.permission.BIND_APPWIDGET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="${applicationId}.permission.READ_SETTINGS" />
+    <uses-permission android:name="${applicationId}.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="${applicationId}.permission.QSB" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:name="me.lal.lawnchair.App"
+        android:backupAgent="me.lal.lawnchair.LauncherBackupAgent"
+        android:fullBackupContent="@xml/backupscheme"
+        android:fullBackupOnly="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:restoreAnyVersion="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true">
+        <activity
+            android:name="me.lal.question.activity.CategoryChooser"
+            android:theme="@android:style/Theme.Material.Light" />
+        <activity
+            android:name="me.lal.lock.activity.LockActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.Light" />
+
+        <service android:name="me.lal.lock.service.ScreenService" />
+
+        <receiver android:name="me.lal.lock.receiver.ScreenReceiver" />
+        <receiver android:name="me.lal.lock.receiver.PhoneUnlockedReceiver" />
+
+        <activity
+            android:name="me.lal.lawnchair.Launcher"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:enabled="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:resumeWhilePausing="true"
+            android:stateNotNeeded="true"
+            android:taskAffinity=""
+            android:theme="@style/LauncherTheme"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.MONKEY" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="me.lal.lawnchair.settings.ui.SettingsActivity"
+            android:autoRemoveFromRecents="true"
+            android:label="@string/settings_button_text"
+            android:theme="@style/SettingsTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="me.lal.wallpaperpicker.WallpaperPickerActivity"
+            android:finishOnCloseSystemDialogs="true"
+            android:label="@string/pick_wallpaper"
+            android:screenOrientation="portrait"
+            android:theme="@style/WallpaperTheme.Picker">
+            <intent-filter>
+                <action android:name="android.intent.action.SET_WALLPAPER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="me.lal.wallpaperpicker.WallpaperCropActivity"
+            android:finishOnCloseSystemDialogs="true"
+            android:label="@string/crop_wallpaper"
+            android:screenOrientation="portrait"
+            android:theme="@style/WallpaperTheme">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.CROP_AND_SET_WALLPAPER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="me.lal.lawnchair.kustomsupport.AutoFinishTransparentActivity"
+            android:theme="@style/Theme.Transparent" />
+
+        <provider
+            android:name="me.lal.lawnchair.kustomsupport.Kustom5SecsProvider"
+            android:authorities="${applicationId}.kustomsupport.kustom5secsprovider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+        <provider
+            android:name="me.lal.lawnchair.LauncherProvider"
+            android:authorities="${applicationId}.settings"
+            android:exported="true"
+            android:readPermission="me.lal.lawnchair.permission.READ_SETTINGS"
+            android:writePermission="me.lal.lawnchair.permission.WRITE_SETTINGS" />
+
+        <receiver
+            android:name="me.lal.lawnchair.InstallShortcutReceiver"
+            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
+            <intent-filter>
+                <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="me.lal.lawnchair.AppWidgetsRestoredReceiver">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_HOST_RESTORED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="me.lal.lawnchair.notification.NotificationListener"
+            android:label="@string/notification_listener_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="me.lal.lawnchair.dynamicui.ColorExtractionService"
+            android:exported="false"
+            android:label="@string/color_extraction_label"
+            android:process=":color_extraction" />
+
+        <meta-data
+            android:name="android.nfc.disable_beam_default"
+            android:value="true" />
+
+        <activity
+            android:name="me.lal.lawnchair.iconpack.EditIconActivity"
+            android:parentActivityName="me.lal.lawnchair.Launcher"
+            android:theme="@style/SettingsTheme" />
+        <activity
+            android:name="me.lal.lawnchair.iconpack.IconPickerActivity"
+            android:parentActivityName="me.lal.lawnchair.iconpack.EditIconActivity"
+            android:theme="@style/SettingsTheme" />
+
+        <meta-data
+            android:name="com.google.android.awareness.API_KEY"
+            android:value="${awarenessApiKey}" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${awarenessApiKey}" />
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
+        <activity
+            android:name="me.lal.lock.activity.AddFace"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name="me.lal.lock.activity.PinActivity"
+            android:theme="@style/Theme.AppCompat"/>
+    </application>
+
+</manifest>
